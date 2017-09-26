@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
+import {Table} from 'react-bootstrap'
 
 var OrderItem = require('./orderItem')
 var OrderTotal = require('./orderTotal');
@@ -9,7 +10,10 @@ var Order = createReactClass({
 
    render() {
 
-      var orderItems = this.props.items;
+      var orderItems = this.props.items.filter(function (item) {
+         return item.quantity > 0;
+      });
+
       orderItems = orderItems.map(function (item, index) {
          return (
             <OrderItem item={item} key={index} onRemove={this.onRemove}/>
@@ -20,15 +24,30 @@ var Order = createReactClass({
 
       return (
          <div id="orderDiv">
-            <table className="table">
+            <Table bordered responsive>
                <caption><h3>Order</h3></caption>
                <tbody>
-                  {orderItems}
+
+                  <tr>
+                     <td colSpan="3">
+                        <Table bordered responsive>
+                           <tbody>
+                              {orderItems}
+                           </tbody>
+                        </Table>
+
+
+
+                     </td>
+                  </tr>
                   <OrderTotal items={this.props.items} />
 
 
+
+
+
                </tbody>
-            </table>
+            </Table>
          </div>
       );
    },

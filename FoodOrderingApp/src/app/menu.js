@@ -1,41 +1,44 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
+import {Table} from 'react-bootstrap'
+
+require('react-bootstrap');
 
 var MenuItem = require('./menuItem');
 
 //Creating component
 var Menu = createReactClass({
 
-  render() {
+   render() {
 
-    var menuItems = this.props.items;
-    menuItems = menuItems.map(function (item, index) {
+      var menuItems = this.props.items;
+      menuItems = menuItems.map(function (item, index) {
+         return (
+            <MenuItem item={item} key={index} onAdd={this.onAdd}/>
+
+         );
+
+      }.bind(this));
+
+
       return (
-        <MenuItem item={item} key={index} onAdd={this.onAdd}/>
+         <div id="menuDiv">
+            <Table bordered responsive>
+               <caption><h3>Menu</h3></caption>
+               <tbody>
+                  {menuItems}
 
+
+               </tbody>
+            </Table>
+         </div>
       );
+   },
 
-    }.bind(this));
-
-
-    return (
-      <div id="menuDiv">
-      <table className="table">
-        <caption><h3>Menu</h3></caption>
-      <tbody>
-      {menuItems}
-
-
-      </tbody>
-      </table>
-      </div>
-    );
-  },
-
-  onAdd(item){
-    this.props.onAdd(item);
-  }
+   onAdd(item){
+      this.props.onAdd(item);
+   }
 
 
 });

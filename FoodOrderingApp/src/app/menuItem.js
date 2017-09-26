@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
-
+import {Button} from 'react-bootstrap'
 
 var MenuItem = createReactClass({
 
@@ -11,7 +11,7 @@ var MenuItem = createReactClass({
       <tr>
         <td>{this.props.item.name}</td>
         <td>{this.props.item.price}</td>
-        <td><button onClick={this.onClick}>Add</button></td>
+        <td><Button onClick={this.onClick}>Add</Button></td>
       </tr>
 
     );
