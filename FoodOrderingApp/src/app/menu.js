@@ -2,6 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 
+var MenuItem = require('./menuItem');
+
 //Creating component
 var Menu = createReactClass({
 
@@ -10,11 +12,8 @@ var Menu = createReactClass({
     var menuItems = this.props.items;
     menuItems = menuItems.map(function (item, index) {
       return (
-        <tr key={index}>
-        <td>{item.name}</td>
-        <td>{item.price}</td>
-        <td><button>Add</button></td>
-        </tr>
+        <MenuItem item={item} key={index} onAdd={this.onAdd}/>
+
       );
 
     }.bind(this));
@@ -32,6 +31,10 @@ var Menu = createReactClass({
       </table>
       </div>
     );
+  },
+
+  onAdd(item){
+    this.props.onAdd(item);
   }
 
 

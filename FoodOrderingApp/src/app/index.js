@@ -7,31 +7,51 @@ var Order = require('./order');
 
 //Creating component
 var FoodApp = createReactClass({
-  getInitialState(){
-    return {
-      menuItems: [{name: 'pizza', price: 10}, {name: 'burger', price: 6}, {name: 'sandwich', price: 4} ],
-      orderItems: [{name: 'pizza', price: 10}, {name: 'burger', price: 6}]
-    };
-  },
+   getInitialState(){
+      return {
+         menuItems: [{name: 'pizza', price: 10}, {name: 'burger', price: 6}, {name: 'sandwich', price: 4} ],
+         orderItems: []
+      };
+   },
 
-  render() {
+   render() {
 
-    return (
-      <div id="appComponent">
-        <table className="table">
-          <caption><h1>Food Ordering App</h1></caption>
-          <tbody>
-            <tr>
-              <td><Menu items={this.state.menuItems} /></td>
-              <td><Order items={this.state.orderItems} /></td>
-            </tr>
-          </tbody>
+      return (
+         <div id="appComponent">
+            <table className="table">
+               <caption><h1>Food Ordering App</h1></caption>
+               <tbody>
+                  <tr>
+                     <td><Menu items={this.state.menuItems} onAdd={this.onAdd} /></td>
+                     <td><Order items={this.state.orderItems} onRemove={this.onRemove} /></td>
+                  </tr>
+               </tbody>
 
-        </table>
+            </table>
 
-      </div>
-    );
-  },
+         </div>
+      );
+   },
+
+   onAdd(item){
+
+      var updatedOrderItems = this.state.orderItems;
+      updatedOrderItems.push(item);
+      this.setState({
+         orderItems: updatedOrderItems
+      }
+   );
+},
+
+onRemove(item){
+   var updatedOrderItems = this.state.orderItems;
+   updatedOrderItems = updatedOrderItems.filter(function (orderItem) {
+      return orderItem.name !== item.name;
+   });
+   this.setState({
+      orderItems: updatedOrderItems
+   });
+}
 
 
 });

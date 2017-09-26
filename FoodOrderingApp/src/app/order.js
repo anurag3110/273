@@ -2,39 +2,40 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var createReactClass = require('create-react-class');
 
+var OrderItem = require('./orderItem')
 var OrderTotal = require('./orderTotal');
 //Creating component
 var Order = createReactClass({
 
-  render() {
+   render() {
 
-    var orderItems = this.props.items;
-    orderItems = orderItems.map(function (item, index) {
+      var orderItems = this.props.items;
+      orderItems = orderItems.map(function (item, index) {
+         return (
+            <OrderItem item={item} key={index} onRemove={this.onRemove}/>
+         );
+
+      }.bind(this));
+
+
       return (
-        <tr key={index}>
-        <td>{item.name}</td>
-        <td>{item.price}</td>
-        <td><button>Add</button></td>
-        </tr>
+         <div id="orderDiv">
+            <table className="table">
+               <caption><h3>Order</h3></caption>
+               <tbody>
+                  {orderItems}
+                  <OrderTotal items={this.props.items} />
+
+
+               </tbody>
+            </table>
+         </div>
       );
+   },
 
-    }.bind(this));
-
-
-    return (
-      <div id="orderDiv">
-      <table className="table">
-      <caption><h3>Order</h3></caption>
-      <tbody>
-      {orderItems}
-      <OrderTotal items={this.props.items} />
-
-
-      </tbody>
-      </table>
-      </div>
-    );
-  }
+   onRemove(item){
+      this.props.onRemove(item);
+   }
 
 
 });
