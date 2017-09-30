@@ -10,7 +10,7 @@ var MenuItem = createReactClass({
     return (
       <tr>
         <td>{this.props.item.name}</td>
-        <td>{this.props.item.price}</td>
+        <td>${this.props.item.price}</td>
         <td><Button onClick={this.onClick}>Add</Button></td>
       </tr>
 
