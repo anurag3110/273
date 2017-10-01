@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title><%= title %></title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script src="/scripts/script.js?!" type="text/javascript">
+
+   </script>
+   <link rel='stylesheet' href='/stylesheets/style.css?!' />
+</head>
+<body>
+
+   <table class="table table-bordered" id="tableCalc">
+      <caption><h1>Calculator</h1></caption>
+      <tr>
+         <td>Operands:</td>
+         <td colspan="2"><input type="text" name="operand1" placeholder="Operand 1" id="inputOperand1" required /></td>
+         <td colspan="2"><input type="text" name="operand2" placeholder="Operand 2" id="inputOperand2" required /></td>
+      </tr>
+
+      <tr>
+         <td>Operation:</td>
+         <td><button class="btn" type="button" name="add" id="buttonAdd" onclick="calc('+');">+</button></td>
+         <td><button class="btn" type="button" name="subtract" id="buttonSubtract" onclick="calc('-')">-</button></td>
+         <td><button class="btn" type="button" name="multiply" id="buttonMultiply" onclick="calc('*')">*</button></td>
+         <td><button class="btn" type="button" name="subtract" id="buttonSubtract" onclick="calc('/')">/</button></td>
+      </tr>
+
+      <tr>
+         <td>Expression:</td>
+         <td colspan="4"><span id="expression"></span></td>
+      </tr>
+
+      <tr>
+         <td>Result</td>
+         <td colspan="4"><span id="result"></span></td>
+      </tr>
+   </table>
+
+</body>
+</html>
