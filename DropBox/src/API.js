@@ -4,6 +4,21 @@ const headers = {
    'Accept': 'application/json'
 };
 
+export const doLogin = (credentials) =>
+fetch(`${api}/login`, {
+   method: 'POST',
+   headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(credentials)
+}).then (res => res)
+.catch(error => {
+   console.log(error);
+   console.log("This is error");
+   return error;
+});
+
 export const getCount = () =>
 fetch(`${api}/count`, {
    method: 'GET',

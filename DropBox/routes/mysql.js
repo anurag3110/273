@@ -6,7 +6,7 @@ function getConnection(){
 		host     : 'localhost',
 		user     : 'admin',
 		password : 'admin',
-		database : 'demosignup',
+		database : 'dropbox',
 		port	 : 3306
 	});
 	return connection;
@@ -29,8 +29,9 @@ function fetchData(callback,sqlQuery){
 			callback(err, rows);
 		}
 	});
-	console.log("\nConnection closed..");
+	console.log("\nConnection closing..");
 	connection.end();
+	console.log("\nConnection closed.");
 }
 
 function insertData(callback,sql){
