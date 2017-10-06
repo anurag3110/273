@@ -4,6 +4,23 @@ const headers = {
    'Accept': 'application/json'
 };
 
+export const doSignUp = (userdata) =>
+fetch(`${api}/signUp`, {
+   method: 'POST',
+   headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(userdata)
+}).then (res => res)
+.catch(error => {
+   console.log(error);
+   console.log("This is error");
+   return error;
+});
+
+
+
 export const doLogin = (credentials) =>
 fetch(`${api}/login`, {
    method: 'POST',

@@ -17,15 +17,13 @@ router.post('/login', function (req, res, next) {
 
    const getPasswordSQL = "SELECT password FROM user WHERE username='" + username + "'";
    console.log('sql = ' + getPasswordSQL);
-   
+
    mySQL.fetchData(function(err,results){
       if(err){
          throw err;
       }
       else
       {
-
-
          if(results.length > 0){
             const passwordFromDB = results[0].password;
 
@@ -52,12 +50,25 @@ router.post('/login', function (req, res, next) {
 
 });
 
+router.post('/signUp', function (req, res, next) {
+   const userdata = req.body;
+
+   const firstName = userdata.firstName;
+   const lastName = userdata.lastName;
+   const username = userdata.username;
+   const password = userdata.password;
+
+   console.log(firstName);
+   console.log(lastName);
+   console.log(username);
+   console.log(password);
 
 
 
-/*
-router.get('/count', function (req, res, next) {
-   const fetchDataSQL = "SELECT count FROM test";
+
+   const getPasswordSQL = "SELECT password FROM user WHERE username='" + username + "'";
+
+
    mySQL.fetchData(function(err,results){
       if(err){
          throw err;
@@ -65,39 +76,30 @@ router.get('/count', function (req, res, next) {
       else
       {
          if(results.length > 0){
-            console.log("Data: " + results[0].count);
-            res.json({count: results[0].count});
+               res.status(401).json({message: 'Username already taken'});
          }
          else {
-            res.status(401).json({message: "No data"});
-            console.log("No data");
+
+            const insertUserSQL = "INSERT INTO user (firstName, lastName, username, password) VALUES ('" + firstName + "','" + lastName + "','" + username + "','" + password + "')";
+
+            mySQL.insertData(function (error, result) {
+               if(error) {
+                  throw error;
+               } else {
+                  if(result.affectedRows > 0){
+                     res.status(201).json({message: "Sign up successful"});
+                  } else {
+                     res.status(401).json({message: "An error occurred, please try again"});
+                  }
+               }
+            }, insertUserSQL);
+
 
          }
       }
-   }, fetchDataSQL);
-
-
+   }, getPasswordSQL);
 
 });
-
-
-
-router.post('/count', function (req, res, next) {
-   const insertDataSQL = "INSERT INTO test VALUES (" + req.body.count + ")";
-
-   mySQL.insertData((err, results) => {
-      if(err){
-			throw err;
-		}
-		else
-		{
-			console.log("No. of results after insertion:" + results.affectedRows);
-         res.json(results);
-      }
-   },insertDataSQL);
-});
-*/
-
 
 
 module.exports = router;

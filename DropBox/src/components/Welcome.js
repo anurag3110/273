@@ -30,7 +30,7 @@ class Welcome extends Component {
 					<div className="alert alert-warning" role="alert">
 						{this.state.username}, welcome to DropBox!
 					</div>
-					<Link to="/">Logout</Link>
+					<Link to="/login">Logout</Link>
 				</div>
 			</div>
 		)
