@@ -18,10 +18,10 @@ class Message extends Component {
                      </div>
                   )
                }
-            </div>
-         </div>
-      );
-   }
-}
 
-export default Message;
+            </div></div>
+         );
+      }
+   }
+
+   export default Message;
