@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Redirect } from 'react-router-dom';
 import * as API from '../API';
 import Login from "./Login";
 import SignUp from './SignUp';
@@ -82,7 +82,7 @@ class HomePage extends Component {
 
    render() {
       return (
-         <div className="container-fluid">
+         <div className="container-fluid" id="homePage">
             <Route exact path="/" render={() => (
                   <div>
                      <Message message="Welcome to DropBox"/>
@@ -117,7 +117,8 @@ class HomePage extends Component {
 
 
                      <Route exact path="/welcome" render={() => (
-                           <Welcome username={this.state.username}/>
+                           this.state.isLoggedIn ? (<Welcome username={this.state.username}/>) : (<Redirect to="/login"/>)
+
                         )}/>
                      </div>
                   );

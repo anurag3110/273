@@ -13,6 +13,7 @@ class Welcome extends Component {
 	};
 
 	componentWillMount(){
+		console.log('' === this.props.username);
 		this.setState({
 			username : this.props.username
 		});
@@ -25,8 +26,12 @@ class Welcome extends Component {
 
 	render(){
 		return(
-			<div className="row justify-content-md-center">
-				<div className="col-md-3">
+			<div className="row" id="welcomeRow">
+				<div className="col-md-2" id="navBar">
+					<img src="/Images/DropBox.svg" id="imageDropBox"></img>
+				</div>
+
+				<div className="col-md-10">
 					<div className="alert alert-warning" role="alert">
 						{this.state.username}, welcome to DropBox!
 					</div>
