@@ -1,24 +1,27 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import './App.css';
+import React, {Component} from 'react';
+//import './App.css';
 
-import Login from './components/Login';
-import { createStore } from 'redux';
-import reducer from './reducers/reducers';
-import { Provider } from 'react-redux';
+// import HomePage from "./components/HomePage";
+// import NewHomePage from "./components/NewHomePage";
+
 import {BrowserRouter} from 'react-router-dom';
-import HomePage from './components/HomePage';
+import Login from "./components/Login";
+//import Welcome from "./components/Welcome";
 
-export default class App extends Component {
+// import HomePage from "./components/HomePage";
 
-   render () {
-      return (
-         
-            <BrowserRouter>
-               <HomePage />
-            </BrowserRouter>
+    class App extends Component {
+        render() {
+            return (
+                <div>
+                    {/*<HomePage/>*/}
+                    {/*<NewHomePage/>*/}
+                    <BrowserRouter>
+                      <Login />
+                    </BrowserRouter>
+                </div>
+            );
+        }
+    }
 
-      );
-
-   }
-}
+    export default App;

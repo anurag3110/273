@@ -1,0 +1,2 @@
+SELECT * FROM user WHERE UID IN 
+(SELECT UID FROM usergroup WHERE GID = 1)

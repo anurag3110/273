@@ -4,8 +4,10 @@ const app = express();
 const path = require('path');
 const session = require('client-sessions');
 const fs = require('fs');
-
-
+const debug = require('debug')('untitled:server');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const multer = require('multer');
 const cors = require('cors');
 app.use(cors());
 
@@ -19,7 +21,7 @@ app.use(session({
 
 // all environments
 app.set('port', process.env.PORT || 9998);
-app.set('views', path.join(__dirname, 'views'));
+// app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', function (path, options, callbacks) {
   fs.readFile(path, 'utf-8', callback);
@@ -27,8 +29,11 @@ app.engine('html', function (path, options, callbacks) {
 // create application/json parser
 //const jsonParser = bodyParser.json()
 
+app.use(logger('dev'));
 // create application/x-www-form-urlencoded parser
 app.use(bodyParser.json());
+app.use(cookieParser());
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // POST /login gets urlencoded bodies
@@ -36,13 +41,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, './public')));
 
+
 //const index = require('../routes/index');
 
 const routes = require('./routes/routes');
 app.use(routes);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);

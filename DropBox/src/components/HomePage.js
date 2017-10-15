@@ -1,128 +1,304 @@
-import React, { Component } from 'react';
-import { Route, withRouter, Redirect } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Link,withRouter} from 'react-router-dom';
 import * as API from '../API';
-import Login from "./Login";
-import SignUp from './SignUp';
-import Message from "./Message";
-import Welcome from "./Welcome";
+import '../stylesheets/styles.css';
+import {connect} from "react-redux";
+import Axios from 'axios';
+
+import FormData from 'form-data';
+import Files from 'react-files';
+
 
 class HomePage extends Component {
 
-   state = {
-      isLoggedIn: false,
-      message: '',
-      username: ''
-   };
 
-   componentDidMount(){
-      this.setState({
-           message: ''
-      });
+  handleDownload = (item) => {
+
+      const FileDownload = require('react-file-download');
+
+      Axios.get(`http://localhost:9998/uploads/${this.props.select.username}/Files/${item}`)
+         .then((response) => {
+              FileDownload(response.data,item);
+         }).catch((err) => {
+           window.alert("Could not download..!!Please try after some time..")
+         })
+
+    }
+
+  handleUnstar = (item) => {
+
+    Axios.get(`http://localhost:9998/deletestarfile`,{params:{username:this.props.select.username,filename:item}})
+      .then((res) => {
+        this.props.removestarFile(item);
+        window.alert('Unstarred Successfully..!!');
+      }).catch((err) => {
+        window.alert('Could not Unstar!! Please try after some time..' +err)
+      })
+
+
+  }
+
+  handleFilesChange = (files) => {
+
+        this.props.fileUpload(files)
+  }
+
+   hanldeFilesError = (error, file) => {
+      console.log('error code ' + error.code + ': ' + error.message)
    }
 
-   handleLogin = (credentials) => {
-      let status, message;
-      API.doLogin(credentials)
-      .then(res => {
-         status = res.status;
-         return res.json();
-      }).then(jsonData => {
-         message = jsonData.message;
 
-         console.log(status);
-         console.log(message);
+   handleUpload = () => {
 
-         if(status === 201) {
-            this.setState({
-               isLoggedIn: true,
-               username: credentials.username
-            });
-            this.props.history.push("/welcome");
-         } else if (status === 401) {
-            this.setState({
-               isLoggedIn: false,
-               message: message
-            });
+      if(this.props.select.files.length > 0){
+         //console.log("inside handleupload")
+         //console.log(this.props.select.files);
+         //var filestoshow = document.getElementById("recentfiles");
+         var formData = new FormData();
+
+         Object.keys(this.props.select.files).forEach((key) => {
+            console.log('where you want')
+            const file = this.props.select.files[key]
+            //console.log(file)
+            //console.log('before form data --> file');
+            //console.log(file);
+            formData.append(key, file, file.name || 'file')
+            //formData.append(key, new Blob([file], { type: file.type }), file.name || 'file')
+            //console.log('after form data');
+            //console.log(formData);
+         })
+          Axios({
+         method:'post',
+         url:`http://localhost:9998/files`,
+         data:formData,
+         params:{username:this.props.select.username} })
+        .then(response => {window.alert(`Files uploaded succesfully!`);
+           this.props.removeFiles();
+         window.location.replace('http://localhost:3000/homepage');
+})
+        .catch(err => {window.alert(`Files could not be uploaded!`)})
+
+
          }
-      })
-
-   };
-
-   handleSignUp = (userdata) => {
-      let status, message;
-      console.log(userdata);
-      API.doSignUp(userdata)
-      .then(res => {
-         status = res.status;
-         return res.json();
-      }).then(jsonData => {
-         message = jsonData.message;
-
-         console.log(status);
-         console.log(message);
-
-         if(status === 201) {
-            this.setState({
-               isLoggedIn: true,
-               message: message,
-               username: userdata.username
-            });
-            this.props.history.push("/welcome");
-         } else if (status === 401) {
-            this.setState({
-               isLoggedIn: false,
-               message: message
-            });
+         else{
+            window.alert("Please select a file first!!")
          }
-      })
-
-   };
+      }
 
 
+      handleSignOut = () => {
+         localStorage.removeItem('jwtToken');
+         this.props.storeRestore();
+         window.location.replace('/');
+      }
 
-   render() {
-      return (
-         <div className="container-fluid" id="homePage">
-            <Route exact path="/" render={() => (
-                  <div>
-                     <Message message="Welcome to DropBox"/>
-                        <button className="btn btn-primary" onClick={() => {
-                              this.props.history.push("/login");
-                           }}>
-                           Login
-                        </button>&nbsp;
-                        <span className="badge badge-pill badge-primary">OR</span>
-                        &nbsp;
-                        <button className="btn btn-default" onClick={() => {
-                              this.props.history.push("/signUp");
-                           }}>
-                           Sign Up
-                        </button>
-                  </div>
-               )}/>
+      handleAbout = (userdata) => {
 
-               <Route exact path="/login" render={() => (
-                     <div>
-                        <Login handleLogin={this.handleLogin}/>
-                        <Message message={this.state.message}/>
-                     </div>
-                  )}/>
+         var status;
 
-                  <Route exact path="/signUp" render={() => (
-                        <div>
-                           <SignUp handleSignUp={this.handleSignUp}/>
-                           <Message message={this.state.message}/>
-                        </div>
-                     )}/>
+         API.fetchAbout(userdata)
+         .then((res) => {
+            status = res.status;
+            return res.json()
+         }).then((receiveddata) => {
 
-
-                     <Route exact path="/welcome" render={() => (
-                           this.state.isLoggedIn ? (<Welcome username={this.state.username}/>) : (<Redirect to="/login"/>)
-
-                        )}/>
-                     </div>
-                  );
-               }
+            if (status === 201) {
+               //document.getElementById("errormessage").style.display = "none";
+               //document.getElementById("changesuccess").style.display = "none";
+               this.props.getUserData(receiveddata.results)
+               //console.log(changeddata.results[0].Work);
+               //this.props.history.push('/about')
+            } else if (status === 404) {
+               //document.getElementById("errormessage").style.display = "block";
+               //document.getElementById("errormessage").innerHTML = receiveddata.message;
+               //document.getElementById("changesuccess").style.display = "block";
             }
+         }).catch(error => {
+            this.props.storeRestore();
+            window.location.replace('/')
+         });
 
-            export default withRouter(HomePage);
+
+         this.props.history.push('/about');
+      }
+
+      componentWillMount(){
+         let status;
+         var token = localStorage.getItem('jwtToken');
+
+         if(!token)
+         {
+            this.props.history.push('/');
+         }
+            else{
+              API.fetchstarFiles({token:this.props.select.token,username:this.props.select.username})
+                .then((res) => {
+                  status = res.status;
+                  return res.json()
+                }).then((json) => {
+
+                      if (status === 201) {
+                          this.props.storestarFiles(json.files)
+                          console.log("Here");
+                          window.location.replace('http://localhost:3000/homepage');
+
+                      } else if (status === 401) {
+                          //
+                      }
+              });
+
+            }
+         //console.log(reduxStore.username);
+
+         //this.props.updateStoreFromLocalStorage(reduxStore.isLoggedIn, reduxStore.username, reduxStore.password, reduxStore.token);
+         //console.log("componentWillMount:" + this.props.select.username);
+      }
+
+      render(){
+
+        let starredfiles = [];
+
+        var userdata = {username:this.props.select.username,token:this.props.select.token}
+      try{
+        starredfiles = this.props.select.starredfiles.map(function(item,index){
+          return(
+            <tr>
+              <td><pre> {item}                         <button className="btn btn-primary"  id="download" type="button" onClick =
+              {() => this.handleDownload(item)}>Download</button>  <button className="btn btn-primary"  id="delete" type="button" onClick =
+              {() => this.handleUnstar(item)}>Unstar</button> </pre></td>
+            </tr>
+          );
+        }.bind(this));
+      }
+      catch(err){console.log(err);}
+
+         return(
+
+            <div className="container-fluid">
+
+               <div className="row">
+                  <div id="leftbarmain" className="col-md-3">
+                     <img id= "homepage" src="/Dropbox_logo.svg"  alt="Dropbox logo main page" ></img>
+                     <Link id="currentpage" to="/homepage"> <h5>Home</h5> </Link>
+                     <Link id="filespage" to="/files"> <h5>Files</h5> </Link>
+                  </div>
+                  <div id="centerbarmain" className="col-md-6">
+                     <h3 id="Home">Home</h3>
+                     <h4 id="starredtag">Starred</h4>
+                     <hr/>
+                                                <table id="tablestar" className="table table-bordered">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    {starredfiles}
+                                </tbody>
+                            </table>                     <hr/>
+                     <div>
+                        <ul id="recentfiles" ></ul>
+                     </div>
+                     <p id="errormessage"></p>
+                  </div>
+                  <div id="rightbarmain" className="col-md-3">
+
+                     <div className="btn-group">
+                        <button id="maindrop" type="button" className="btn btn-primary">Account</button>
+                        <button id="maindroparr" type="button" className="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           <span className="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div className="dropdown-menu">
+                           <h6>&nbsp;{this.props.select.username}&nbsp;</h6>
+                           <div className="dropdown-divider"></div>
+                           <a className="dropdown-item" onClick={() => this.handleAbout(userdata)}>About Me</a>
+                           <div className="dropdown-divider"></div>
+                           <a className="dropdown-item" onClick={() => this.handleSignOut()}>Sign Out</a>
+                        </div>
+                     </div>
+
+                     <button id="selectfiles"
+                        className="btn btn-primary"
+                        type="button">
+                        <Files id='filesadded'
+                           ref='files'
+                           className='files-dropzone-list'
+                           onChange={this.handleFilesChange}
+                           onError={this.handleFilesError}
+                           multiple
+                           maxFiles={10}
+                           maxFileSize={10000000}
+                           minFileSize={0}
+                           clickable
+                           > Select Files
+                        </Files>
+                     </button>
+
+                     <button id="uploadfiles"
+                        className="btn btn-primary"
+                        type="button"
+                        onClick={() => this.handleUpload()}
+                        disabled={(this.props.select.files.length < 0) ? true : false}>
+                        Upload</button>
+
+
+
+                  </div>
+               </div>
+
+
+            </div>
+         )
+      }
+   }
+
+   const mapStateToProps = (state) => {
+      return{
+         select: state.userReducer
+      };
+   };
+
+   const mapDispatchToProps = (dispatch) => {
+      return{
+         storeRestore: () => {
+            dispatch({
+               type: "RESTORE"
+            });
+         },
+
+         fileUpload: (files) => {
+            //console.log("fileUpload:" + files);
+            dispatch({
+               type: "ADDFILE",
+               payload: {files:files}
+            })
+         },
+
+    storestarFiles: (files) => {
+          dispatch({
+        type: "STAR",
+        payload: {files:files}
+      });
+    },
+
+
+    removeFiles: () => {
+        dispatch({
+        type: "REMOVEFILE"
+      })
+    },
+
+    removestarFile: (file) => {
+          dispatch({
+        type: "REMOVESTAR",
+        payload: {file:file}
+      })
+    },
+
+         getUserData: (data) => {
+            dispatch({
+               type: "CHANGEDATA",
+               payload :{data:data}
+            });
+         },
+      };
+   };
+
+   export default withRouter(connect(mapStateToProps,mapDispatchToProps)(HomePage));

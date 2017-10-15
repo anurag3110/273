@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as API from './API';
-
-import { createStore } from 'redux';
-import reducer from './reducers/reducers';
-import { Provider } from 'react-redux';
+import {Provider} from "react-redux";
+import store from "./actions/store"
 import App from './App';
+//import {loadState,saveState} from './localStorage.js'
 
+//const persistedState = loadState();
 
+/*
+store.subscribe(() => {
+  saveState(store.getState());
+});
+*/
 
 ReactDOM.render(
-
-        <App/>
-
-    ,
-    document.getElementById('app')
-);
+  <Provider store={store}>
+    <App/>
+  </Provider>,
+  document.getElementById('app'));
