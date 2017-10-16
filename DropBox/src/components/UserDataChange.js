@@ -57,16 +57,16 @@ class UserDataChange extends Component {
           <div className="container-fluid">
               <div className="row">
                   <div id="leftbarmain" className="col-md-3">
-                        <img id= "homepage" src="/Dropbox_Mainpage_logo.png"  alt="Dropbox logo main page" ></img>
-                        <Link id="currentpage" to="/homepage"> <h5>Home</h5> </Link>
-                        <Link id="filespage" to="/files"> <h5>Files</h5> </Link>
+                        <img id= "homepage" src="/Dropbox_logo.svg"  alt="Dropbox logo main page" ></img>
+                        <Link id="currentpage" to="/homepage"> <h6>Home</h6> </Link>
+                        <Link id="filespage" to="/files"> <h6>Files</h6> </Link>
                   </div>
                   <div id="centerbarmain" className="col-md-6">
                       <form id="userdatachangeform">
 
-                          <div>
-                              <p id="validatenm"></p>
-                          </div>
+
+                          <div id="validatenm" class="alert alert-danger" role="alert">
+ </div>
 
                           <div className="form-group">
                                <input id="fnudch"
@@ -94,9 +94,9 @@ class UserDataChange extends Component {
                               />
                           </div>
 
-                          <div>
-                              <p id="validateemail"></p>
-                          </div>
+
+                          <div id="validateemail" class="alert alert-danger" role="alert">
+ </div>
 
                           <div className="form-group">
                               <input id="emailudch"
@@ -112,188 +112,110 @@ class UserDataChange extends Component {
                           </div>
 
 
-                          <div>
-                              <p id="validatew1"></p>
-                          </div>
+
+                          <div id="validatework" class="alert alert-danger" role="alert">
+</div>
 
                           <div className="form-group">
-                              <input id="w1udch"
+                              <input id="workudch"
                                   className="form-control"
                                   type="email"
                                   label="Username"
-                                  placeholder="Work 1"
-                                  //value={this.props.select.w1}
+                                  placeholder="Work"
+                                  //value={this.props.select.work}
                                   onChange={(event) => {
-                                      userdetails.w1 = event.target.value;
+                                      userdetails.work = event.target.value;
                                   }}
                               />
                           </div>
 
-                          <div>
-                              <p id="validatew2"></p>
-                          </div>
+
+
+
+
+
+
+                          <div id="validateeducation" class="alert alert-danger" role="alert">
+</div>
 
                           <div className="form-group">
-                              <input id="w2udch"
+                              <input id="educationludch"
                                   className="form-control"
                                   type="email"
                                   label="Username"
-                                  placeholder="Work 2"
-                                  //value={this.props.select.w2}
+                                  placeholder="Education"
+                                  //value={this.props.select.education}
                                   onChange={(event) => {
-                                    userdetails.w2 = event.target.value;
-                                    //this.props.w2Change(event.target.value)
+                                      userdetails.education = event.target.value;
+                                      //this.props.educationChange(event.target.value)
                                   }}
                               />
                           </div>
 
-                          <div>
-                              <p id="validatee1"></p>
-                          </div>
+
+
+
+                          <div id="validatemusic" class="alert alert-danger" role="alert">
+</div>
 
                           <div className="form-group">
-                              <input id="e1ludch"
+                              <input id="musicudch"
                                   className="form-control"
                                   type="email"
                                   label="Username"
-                                  placeholder="Education 1"
-                                  //value={this.props.select.e1}
+                                  placeholder="Favorite Music Genre"
+                                  //value={this.props.select.music}
                                   onChange={(event) => {
-                                      userdetails.e1 = event.target.value;
-                                      //this.props.e1Change(event.target.value)
+                                      userdetails.music = event.target.value;
+                                      //this.props.musicChange(event.target.value)
                                   }}
                               />
                           </div>
 
-                          <div>
-                              <p id="validatee2"></p>
-                          </div>
+
+
+                          <div id="validateshows" class="alert alert-danger" role="alert">
+</div>
 
                           <div className="form-group">
-                              <input id="e2udch"
+                              <input id="showsudch"
                                   className="form-control"
                                   type="email"
                                   label="Username"
-                                  placeholder="Education 2"
-                                  //value={this.props.select.e2}
+                                  placeholder="Favorite TV Show"
+                                  //value={this.props.select.shows}
                                   onChange={(event) => {
-                                      userdetails.e2 = event.target.value;
-                                      //this.props.e2Change(event.target.value)
+                                    userdetails.shows = event.target.value;
+                                    //this.props.showsChange(event.target.value)
                                   }}
                               />
                           </div>
 
-                          <div>
-                              <p id="validatem1"></p>
-                          </div>
+
+
+
+                          <div id="validatesports" class="alert alert-danger" role="alert">
+</div>
 
                           <div className="form-group">
-                              <input id="m1udch"
+                              <input id="sportsudch"
                                   className="form-control"
                                   type="email"
                                   label="Username"
-                                  placeholder="Music Interest 1"
-                                  //value={this.props.select.m1}
+                                  placeholder="Favorite Sport"
+                                  //value={this.props.select.sports}
                                   onChange={(event) => {
-                                      userdetails.m1 = event.target.value;
-                                      //this.props.m1Change(event.target.value)
+                                    userdetails.sports = event.target.value;
+                                      //this.props.sportsChange(event.target.value)
                                   }}
                               />
                           </div>
 
-                          <div>
-                              <p id="validatem2"></p>
-                          </div>
 
-                          <div className="form-group">
-                              <input id="m2udch"
-                                  className="form-control"
-                                  type="email"
-                                  label="Username"
-                                  placeholder="Music Interest 2"
-                                  //value={this.props.select.m2}
-                                  onChange={(event) => {
-                                      userdetails.m2 = event.target.value;
-                                      //this.props.m2Change(event.target.value)
-                                  }}
-                              />
-                          </div>
 
-                          <div>
-                              <p id="validatesh1"></p>
-                          </div>
 
-                          <div className="form-group">
-                              <input id="sh1udch"
-                                  className="form-control"
-                                  type="email"
-                                  label="Username"
-                                  placeholder="Shows Interest 1"
-                                  //value={this.props.select.sh1}
-                                  onChange={(event) => {
-                                    userdetails.sh1 = event.target.value;
-                                    //this.props.sh1Change(event.target.value)
-                                  }}
-                              />
-                          </div>
-
-                          <div>
-                              <p id="validatesh2"></p>
-                          </div>
-
-                          <div className="form-group">
-                              <input id="sh2udch"
-                                  className="form-control"
-                                  type="email"
-                                  label="Username"
-                                  placeholder="Shows Interest 2"
-                                  //value={this.props.select.sh2}
-                                  onChange={(event) => {
-                                    userdetails.sh2 = event.target.value;
-                                      //this.props.sh2Change(event.target.value)
-                                  }}
-                              />
-                          </div>
-
-                          <div>
-                              <p id="validatesp1"></p>
-                          </div>
-
-                          <div className="form-group">
-                              <input id="sp1udch"
-                                  className="form-control"
-                                  type="email"
-                                  label="Username"
-                                  placeholder="Sports Interest 1"
-                                  //value={this.props.select.sp1}
-                                  onChange={(event) => {
-                                    userdetails.sp1 = event.target.value;
-                                      //this.props.sp1Change(event.target.value)
-                                  }}
-                              />
-                          </div>
-
-                          <div>
-                              <p id="validatesp2"></p>
-                          </div>
-
-                          <div className="form-group">
-                              <input id="sp2udch"
-                                  className="form-control"
-                                  type="email"
-                                  label="Username"
-                                  placeholder="Sports Interest 2"
-                                  //value={this.props.select.sp2}
-                                  onChange={(event) => {
-                                      userdetails.sp2 = event.target.value;
-                                      //this.props.sp2Change(event.target.value)
-                                  }}
-                              />
-                          </div>
-
-                          <div>
-                              <p id="changesuccess"></p>
-                          </div>
+                          <div id="changesuccess" class="alert alert-danger" role="alert">
+</div>
 
                           <div id="change" className="form-group">
                               <button id="change"
@@ -333,76 +255,7 @@ const mapDispatchToProps = (dispatch) => {
       });
     },
 
-/*    w1Change: (w1) => {
-          dispatch({
-        type: "CHANGEW1",
-        payload :{w1:w1}
-      });
-    },
 
-    w2Change: (w2) => {
-          dispatch({
-        type: "CHANGEW2",
-        payload :{w2:w2}
-      });
-    },
-
-    e1Change: (e1) => {
-          dispatch({
-        type: "CHANGEE1",
-        payload :{e1:e1}
-      });
-    },
-
-    e2Change: (e2) => {
-          dispatch({
-        type: "CHANGEE2",
-        payload :{e2:e2}
-      });
-    },
-
-    m1Change: (m1) => {
-          dispatch({
-        type: "CHANGEM1",
-        payload :{m1:m1}
-      });
-    },
-
-    m2Change: (m2) => {
-          dispatch({
-        type: "CHANGEM2",
-        payload :{m2:m2}
-      });
-    },
-
-    sh1Change: (sh1) => {
-          dispatch({
-        type: "CHANGESH1",
-        payload :{sh1:sh1}
-      });
-    },
-
-    sh2Change: (sh2) => {
-          dispatch({
-        type: "CHANGESH2",
-        payload :{sh2:sh2}
-      });
-    },
-
-    sp1Change: (sp1) => {
-          dispatch({
-        type: "CHANGESP1",
-        payload :{sp1:sp1}
-      });
-    },
-
-    sp2Change: (sp2) => {
-          dispatch({
-        type: "CHANGESP2",
-        payload :{sp2:sp2}
-      });
-    },
-*/
   };
 };
 

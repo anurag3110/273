@@ -13,6 +13,8 @@ class Login extends Component {
 
     handleSubmit = (userdata) => {
 
+
+
         var fl = 0;
         if(document.getElementById("emailsi").value === '')
         {
@@ -94,9 +96,10 @@ class Login extends Component {
                                     <h5>Sign In </h5> <span id="signUpLink">or <Link to="/signup"> create an account</Link></span>
                                 </div>
 
-                                <div>
-                                    <p id="validateloginem"></p>
-                                </div>
+
+                                <div id="validateloginem" class="alert alert-danger" role="alert">
+
+</div>
 
                                 <div className="form-group">
                                     <input id="emailsi"
@@ -111,9 +114,10 @@ class Login extends Component {
                                     />
                                 </div>
 
-                                <div>
-                                    <p id="validateloginpass"></p>
-                                </div>
+
+                                <div id="validateloginpass" class="alert alert-danger" role="alert">
+
+</div>
 
                                 <div className="form-group">
                                     <input id="passsi"
@@ -128,9 +132,10 @@ class Login extends Component {
                                     />
                                 </div>
 
-                                <div>
-                                    <p id="failedlogin"></p>
-                                </div>
+
+                                <div id="failedlogin" class="alert alert-danger" role="alert">
+
+</div>
 
                                 <div  className="form-group">
                                     <button id="signin"

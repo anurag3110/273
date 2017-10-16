@@ -118,9 +118,9 @@ class SignUp extends Component {
                                     <Link id="loginlink" to="/"> <b>or</b> log in</Link>
                                 </div>
 
-                                <div>
-                                    <p id="validatenm"></p>
-                                </div>
+
+                                <div id="validatenm" class="alert alert-danger" role="alert">
+</div>
 
                                 <div className="form-group">
                                     <input id="fnsu"
@@ -154,9 +154,9 @@ class SignUp extends Component {
                                     />
                                 </div>
 
-                                <div>
-                                    <p id="validateemail"></p>
-                                </div>
+
+                                <div id="validateemail" class="alert alert-danger" role="alert">
+</div>
 
                                 <div className="form-group">
                                     <input id="emailsu"
@@ -174,9 +174,9 @@ class SignUp extends Component {
                                     />
                                 </div>
 
-                                <div>
-                                    <p id="validatepass"></p>
-                                </div>
+
+                                <div id="validatepass" class="alert alert-danger" role="alert">
+</div>
 
                                 <div className="form-group">
                                     <input id="passsu"
@@ -195,9 +195,9 @@ class SignUp extends Component {
 
                                 </div>
 
-                                <div>
-                                    <p id="signupsuccess"></p>
-                                </div>
+
+                                <div id="signupsuccess" class="alert alert-danger" role="alert">
+</div>
 
                                 <div id="signup" className="form-group">
                                     <button

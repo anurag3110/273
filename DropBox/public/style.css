@@ -9,3 +9,7 @@ html, body, #app, #homePage, #welcomeRow, #groupsRow {
 #imageDropBox {
 	margin: 40px;
 }
+
+body {
+   font-family: "AtlasGrotesk", "sans-serif";
+}

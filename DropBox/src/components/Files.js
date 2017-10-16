@@ -130,26 +130,28 @@ handleStar = (item) => {
           //console.log(url)
           return(
             <tr>
-              <td><pre> {item}                         <button className="btn btn-primary"  id="download" type="button" onClick =
-              {() => this.downloadFile(item)}>Download</button>  <button className="btn btn-primary"  id="delete" type="button" onClick =
-              {() => this.deleteFile(item)}>Delete</button>  <button className="btn btn-primary"  id="star" type="button" onClick =
-              {() => this.downloadFile(item)}>Star</button></pre></td>
+               <td><button className="btn btn-primary"  id="star" type="button" onClick =
+              {() => this.handleStar(item)}>Star</button></td>
+           <td>{item} </td>
+          <td> <button className="btn btn-primary"  id="download" type="button" onClick =
+          {() => this.downloadFile(item)}>Download</button></td>
+       <td> <button className="btn btn-primary"  id="delete" type="button" onClick =
+       {() => this.deleteFile(item)}>Delete</button></td>
             </tr>
           );
         }.bind(this));
-
 
 
         return(
           <div className="container-fluid">
               <div className="row">
                   <div id="leftbarmain" className="col-md-3">
-                        <img id= "homepage" src="/Dropbox_Mainpage_logo.png"  alt="Dropbox logo main page" ></img>
-                        <Link id="currentpage" to="/homepage"> <h5>Home</h5> </Link>
-                        <Link id="filespage" to="/files"> <h5>Files</h5> </Link>
+                        <img id= "homepage" src="/Dropbox_logo.svg"  alt="Dropbox logo main page" ></img>
+                        <Link id="currentpage" to="/homepage"> <h6>Home</h6> </Link>
+                        <Link id="filespage" to="/files"> <h6>Files</h6> </Link>
                   </div>
                   <div id="centerbarmain" className="col-md-6">
-                  <h3 className="text-center"> Files </h3>
+                  <h3 className="text-center"> My Files </h3>
                   <table id="tableMenu" className="table table-bordered">
                       <thead>
                       </thead>

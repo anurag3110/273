@@ -8,16 +8,16 @@ const userReducer = (state = {
   password:'',
   token:'',
   contact:'',
-  w1:'',
-  w2:'',
-  e1:'',
-  e2:'',
-  m1:'',
-  m2:'',
-  sh1:'',
-  sh2:'',
-  sp1:'',
-  sp2:'',
+  work:'',
+
+  education:'',
+
+  music:'',
+
+  shows:'',
+
+  sports:'',
+
   files:[],
   starredfiles:[],
   APIcall:0
@@ -65,16 +65,16 @@ const userReducer = (state = {
     case 'CHANGEDATA':
        state={
          ...state,
-         w1 : action.payload.data[0].Work,
-         w2 : action.payload.data[1].Work,
-         e1 : action.payload.data[0].Education,
-         e2 : action.payload.data[1].Education,
-         m1 : action.payload.data[0].Music,
-         m2 : action.payload.data[1].Music,
-         sh1: action.payload.data[0].Shows,
-         sh2: action.payload.data[1].Shows,
-         sp1: action.payload.data[0].Sports,
-         sp2: action.payload.data[1].Sports
+         work : action.payload.data[0].Work,
+
+         education : action.payload.data[0].Education,
+
+         music : action.payload.data[0].Music,
+
+         shows: action.payload.data[0].Shows,
+
+         sports: action.payload.data[0].Sports,
+
        };
        break;
 
@@ -88,16 +88,16 @@ const userReducer = (state = {
           password:'',
           token:'',
           contact:'',
-          w1:'',
-          w2:'',
-          e1:'',
-          e2:'',
-          m1:'',
-          m2:'',
-          sh1:'',
-          sh2:'',
-          sp1:'',
-          sp2:'',
+          work:'',
+
+          education:'',
+
+          music:'',
+
+          shows:'',
+
+          sports:'',
+
           files:[],
           starredfiles:[],
           APIcall:0

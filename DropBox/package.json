@@ -1,5 +1,5 @@
 {
-  "name": "node-react-boiler-plate",
+ "name": "node-react-boiler-plate",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.2",
+    "bcrypt": "^1.0.3",
     "blob": "0.0.4",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",

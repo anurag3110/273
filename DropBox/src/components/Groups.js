@@ -82,7 +82,7 @@ export default class Groups extends Component {
                         <label htmlFor="divAddUsers">Add Members</label>
                         <div id="divAddUsers">
 
-                           <input type="text" className="form-control" ref={(input) => { return (this.user1 = input); }} id="user1" placeholder="UserName1" />
+                           <input type="text" className="form-control" ref={(input) => { return (this.user1 = input); }} id="user1" placeholder="UserNameducation" />
 
                            <input type="text" className="form-control" ref={(input) => { return (this.user2 = input); }} id="user2" placeholder="UserName2" />
 

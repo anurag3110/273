@@ -9,7 +9,8 @@ const jwt = require('jsonwebtoken')
 /* GET users listing. */
 const fs = require('fs');
 const multer = require('multer');
-
+const bcrypt = require('bcrypt');
+const saltAndPepper = 7;
 
 let upload = multer({ dest: './public/uploads/' })
 
@@ -60,25 +61,30 @@ router.post('/doLogin', function (req, res, next) {
     var reqPassword = req.body.password;
     var jwtSecret = 'somesecretkey';
 
-    const fetchDataSQL = "SELECT * FROM user where email = '" + reqUsername + "' and password = '" + reqPassword+"'";
+    const fetchDataSQL = "SELECT * FROM user where email = '" + reqUsername + "'";
     console.log(fetchDataSQL);
     mySQL.fetchData(function(err,results){
        if(err){
-          res.status(404).json({message:'Some error occurred!'})
+          res.status(404).json({message:'Bas request!'})
        }
        else
        {
           //console.log(results.length);
           if(results.length > 0  ){
-            //console.log(results[0].firstname)
-             token = jwt.sign({
-              username: reqUsername
-            }, jwtSecret)
-             res.status(201).json({message: "Login Successful!!!",token:token,firstname: results[0].firstname,lastname: results[0].lastname});
-             console.log("Login Successful")
+             if(bcrypt.compareSync(reqPassword, results[0].password)) {
+                token = jwt.sign({
+                username: reqUsername
+             }, jwtSecret)
+              res.status(201).json({message: "Login Successful!!!",token:token,firstname: results[0].firstname,lastname: results[0].lastname});
+              console.log("Login Successful")
+           } else {
+             res.status(401).json({message: "Invalid password"});
+             console.log("Wrong password");
+          }
+
           }
           else {
-             res.status(401).json({message: "Oops!! Invalid login. Please try again.."});
+             res.status(401).json({message: "No such user exists"});
              console.log("No data");
           }
        }
@@ -93,41 +99,44 @@ router.post('/doSignUp', function (req, res, next) {
     var reqEmail = req.body.email;
     var reqPassword = req.body.password;
   //  var insertData,selectData;
+bcrypt.hash(reqPassword, saltAndPepper, (err, hashedPassword) => {
+   console.log(hashedPassword);
+   const insertDataSQL = "INSERT INTO user VALUES ('" + reqFirstName + "','" + reqLastName + "','" + reqEmail + "','" + hashedPassword + "')";
+   const fetchDataSQL = "SELECT * FROM user WHERE email = '" + reqEmail + "'";
+
+   mySQL.fetchData(function(err,results){
+      if(err){
+         throw err;
+      }
+      else
+      {
+         //console.log(results.length);
+         if(results.length > 0  ){
+       //     selectData = {message: "Email already exists!!!"};
+            res.status(401).json({fl: 0,message: "Email already exists!!!"})
+         }
+         else {
+           mySQL.insertData((err, results) => {
+              if(err){
+                     res.status(404).json({fl: 2,message:'Some error occurred!'})
+            }
+            else
+            {
+                   console.log("No. of results after insertion:" + results.affectedRows);
+                 makeDir('../react/public/uploads/'+reqEmail)
+                 makeDir('../react/public/uploads/'+reqEmail+'/Files/')
+                 makeDir('../react/public/uploads/'+reqEmail+'/StarredFiles/')
+                 res.status(201).json({fl: 1,message: "Yay!!! Your account has been created...! Please Login"})
+                 console.log("Inserted");
+              }
+           },insertDataSQL)
+         }
+      }
+
+   }, fetchDataSQL);
+});
 
 
-    const insertDataSQL = "INSERT INTO user VALUES ('" + reqFirstName + "','" + reqLastName + "','" + reqEmail + "','" + reqPassword + "')";
-    const fetchDataSQL = "SELECT * FROM user WHERE email = '" + reqEmail + "'";
-
-    mySQL.fetchData(function(err,results){
-       if(err){
-          throw err;
-       }
-       else
-       {
-          //console.log(results.length);
-          if(results.length > 0  ){
-        //     selectData = {message: "Email already exists!!!"};
-             res.status(401).json({fl: 0,message: "Email already exists!!!"})
-          }
-          else {
-            mySQL.insertData((err, results) => {
-               if(err){
-             			res.status(404).json({fl: 2,message:'Some error occurred!'})
-         		}
-         		else
-         		{
-         			    console.log("No. of results after insertion:" + results.affectedRows);
-                  makeDir('../react/public/uploads/'+reqEmail)
-                  makeDir('../react/public/uploads/'+reqEmail+'/Files/')
-                  makeDir('../react/public/uploads/'+reqEmail+'/StarredFiles/')
-                  res.status(201).json({fl: 1,message: "Yay!!! Your account has been created...! Please Login"})
-                  console.log("Inserted");
-               }
-            },insertDataSQL)
-          }
-       }
-
-    }, fetchDataSQL);
 
   })
 
@@ -137,43 +146,42 @@ router.post('/changeUserData', function (req, res, next) {
 
       var reqUsername = req.body.username;
 
-      if(!req.body.w1 == ''){
-        var reqw1 = req.body.w1;
+      if(!req.body.work == ''){
+        var reqwork = req.body.work;
       }else {
-        var reqw1 = '';
+        var reqwork = '';
       }
 
 
-      if(!req.body.e1 == ''){
-        var reqe1 = req.body.e1;
+      if(!req.body.education == ''){
+        var reqeducation = req.body.education;
       }else {
-        var reqe1 = '';
+        var reqeducation = '';
       }
 
-      if(!req.body.m1 == ''){
-        var reqm1 = req.body.m1;
+      if(!req.body.music == ''){
+        var reqmusic = req.body.music;
       }else {
-        var reqm1 = '';
+        var reqmusic = '';
       }
 
-      if(!req.body.sh1 == ''){
-        var reqsh1 = req.body.sh1;
+      if(!req.body.shows == ''){
+        var reqshows = req.body.shows;
       }else{
-        var reqsh1 = '';
+        var reqshows = '';
       }
 
 
-      if(!req.body.sp1 == ''){
-        var reqsp1 = req.body.sp1;
+      if(!req.body.sports == ''){
+        var reqsports = req.body.sports;
       }else {
-        var reqsp1 = '';
+        var reqsports = '';
       }
 
     //  var insertData,selectData;
 
       const fetchDataSQL = "SELECT * FROM userdetails where email = '" + reqUsername + "'";
-      const insertDataSQL1 = "INSERT INTO userdetails VALUES ('" + reqw1 + "','" + reqe1 + "','" + reqm1 + "','" + reqsh1 + "','" + reqsp1 + "','" + reqUsername + "')";
-      // const insertDataSQL2 = "INSERT INTO userdetails VALUES ('" + reqw2 + "','" + reqe2 + "','" + reqm2 + "','" + reqsh2 + "','" + reqsp2 + "','" + reqUsername + "')";
+      const insertDataSQL1 = "INSERT INTO userdetails VALUES ('" + reqwork + "','" + reqeducation + "','" + reqmusic + "','" + reqshows + "','" + reqsports + "','" + reqUsername + "')";
 
       mySQL.fetchData(function(err,results){
            if(err){
@@ -285,8 +293,9 @@ router.post('/getstarFiles', function (req, res, next) {
 
           fs.readdirSync(path.join(__dirname, `../public/uploads/${username}/StarredFiles`)).forEach(file => {
                 filelist.push(file);
+                console.log('filePush');
           })
-          console.log(filelist)
+          console.log(filelist);
           res.status(201).json({files:filelist})
       }
        else{
