@@ -1,0 +1,1 @@
+SELECT * FROM group WHERE admin = 1;
