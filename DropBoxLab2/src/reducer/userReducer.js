@@ -65,15 +65,15 @@ const userReducer = (state = {
     case 'CHANGEDATA':
        state={
          ...state,
-         work : action.payload.data[0].Work,
+         work : action.payload.data.work,
 
-         education : action.payload.data[0].Education,
+         education : action.payload.data.education,
 
-         music : action.payload.data[0].Music,
+         music : action.payload.data.music,
 
-         shows: action.payload.data[0].Shows,
+         shows: action.payload.data.shows,
 
-         sports: action.payload.data[0].Sports,
+         sports: action.payload.data.sports,
 
        };
        break;

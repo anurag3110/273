@@ -110,7 +110,7 @@ class HomePage extends Component {
                //this.props.history.push('/about')
             } else if (status === 404) {
                //document.getElementById("errormessage").style.display = "block";
-               //document.getElementById("errormessage").innerHTML = receiveddata.message;
+               //document.getElementById("err ormessage").innerHTML = receiveddata.message;
                //document.getElementById("changesuccess").style.display = "block";
             }
          }).catch(error => {
