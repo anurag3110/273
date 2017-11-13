@@ -27,12 +27,14 @@ router.post('/getUserData', function (req, res, next) {
    if(req.body.token === token){
 
       let userName = req.body.username;
-      mongo.findOne({email: userName}, (error, user) => {
-         if (error) {
-            res.status(404).json({message:'Some error occurred'});
-         } else {
-            res.status(201).json({results: user});
-         }
+      mongo.findOne({email: userName}, (user) => {
+
+            if (user === undefined || user === null) {
+               res.status(404).json({message:'Some error occurred'});
+            } else {
+               res.status(201).json({results: user});
+            }
+
       });
    }
    else {
@@ -48,21 +50,24 @@ router.post('/doLogin', function (req, res, next) {
    var reqUsername = req.body.username;
    var reqPassword = req.body.password;
    var jwtSecret = 'somesecretkey';
-   mongo.findOne({email: reqUsername}, (error, user) => {
-      if (error) {
-         res.status(404).json({message:'Bad request!'});
-      } else {
-         if(bcrypt.compareSync(reqPassword, user.password)) {
-            token = jwt.sign({
-               username: reqUsername
-            }, jwtSecret)
-            res.status(201).json({message: "Login Successful!",token:token,firstname: user.firstname,lastname: user.lastname});
-            console.log("Login Successful")
+   mongo.findOne({email: reqUsername}, (user) => {
+
+         if (user === undefined || user === null) {
+            res.status(404).json({message:'No such user!'});
          } else {
-            res.status(401).json({message: "Invalid password"});
-            console.log("Wrong password");
+            if(bcrypt.compareSync(reqPassword, user.password)) {
+               token = jwt.sign({
+                  username: reqUsername
+               }, jwtSecret)
+               res.status(201).json({message: "Login Successful!",token:token,firstname: user.firstname,lastname: user.lastname});
+               console.log("Login Successful")
+            } else {
+               res.status(401).json({message: "Invalid password"});
+               console.log("Wrong password");
+            }
          }
-      }
+
+
    });
 });
 
@@ -75,29 +80,31 @@ router.post('/doSignUp', function (req, res, next) {
    //  var insertData,selectData;
    bcrypt.hash(reqPassword, saltAndPepper, (err, hashedPassword) => {
       console.log(hashedPassword);
-      mongo.findOne({email: reqEmail}, (error, user) => {
-         if (error) {
-            //no such user
-            mongo.save({
-               firstName: reqFirstName,
-               lastName: reqLastName,
-               email: reqEmail,
-               password: hashedPassword
-            }, (error) => {
-               if (error) {
-                  res.status(404).json({fl: 2,message:'Some error occurred!'})
-               } else {
-                  console.log("No. of results after insertion:" + results.affectedRows);
-                  makeDir('../react/public/uploads/' + reqEmail);
-                  makeDir('../react/public/uploads/' + reqEmail + '/Files/');
-                  makeDir('../react/public/uploads/' + reqEmail + '/StarredFiles/');
-                  res.status(201).json({fl: 1,message: "SignUp successful, please login"});
-                  console.log("Inserted");
-               }
-            });
-         } else {
-            res.status(401).json({fl: 0,message: "User already registered!"})
-         }
+      mongo.findOne({email: reqEmail}, (user) => {
+
+            if (user === undefined || user === null) {
+               console.log("user === undefined || user === null");
+               mongo.save({
+                  firstName: reqFirstName,
+                  lastName: reqLastName,
+                  email: reqEmail,
+                  password: hashedPassword
+               }, () => {
+                  // if (error) {
+                  //    res.status(404).json({fl: 2,message:'Some error occurred!'})
+                  // } else {
+                  console.log("saved");
+                     makeDir('../react/public/uploads/' + reqEmail);
+                     makeDir('../react/public/uploads/' + reqEmail + '/Files/');
+                     makeDir('../react/public/uploads/' + reqEmail + '/StarredFiles/');
+                     res.status(201).json({fl: 1,message: "SignUp successful, please login"});
+                     console.log("Inserted");
+
+               });
+            } else {
+               res.status(401).json({fl: 0,message: "User already registered!"})
+            }
+
       });
    });
 });
@@ -140,18 +147,15 @@ router.post('/changeUserData', function (req, res, next) {
          var reqsports = '';
       }
 
-      mongo.findOneAndUpdate({email: reqUsername}, {work: reqwork, education: reqeducation, music: reqmusic, shows: reqshows, sports: reqsports}, (error, results) => {
-         if (error) {
-            res.status(401).json({message: "Some error occured"});
-         } else {
-            res.status(201).json({message:"Details saved!!",results:results});
-         }
+      mongo.findOneAndUpdate({email: reqUsername}, {work: reqwork, education: reqeducation, music: reqmusic, shows: reqshows, sports: reqsports}, (results) => {
+            if (results === undefined || results === null) {
+               res.status(401).json({message: "Some error occured"});
+            } else {
+               res.status(201).json({message:"Details saved!!", results:results});
+            }
       });
-
-
-
    }
-   else{
+   else {
       res.status(404);
    }
 

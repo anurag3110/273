@@ -13,42 +13,48 @@ mongoose.connect('mongodb://localhost:27017/dropbox', {
 module.exports.findOne = function (findingRecord, callback) {
    User.findOne(findingRecord).then(function(error, record){
       if (error) {
-         callback(error, null);
+         throw error;
+      } else {
+         console.log("findMongo record = " + record);
+         mongoose.disconnect(function () {
+            console.log("disconnected");
+            callback(record);
+         });
       }
-      console.log("findMongo record = " + record);
-      mongoose.disconnect(function () {
-         console.log("disconnected");
-         callback(null, record);
-      });
+
    });
 }
 
 module.exports.save = function (savingRecord, callback) {
+   console.log(savingRecord);
    const user = new User(savingRecord);
+   console.log(user);
    user.save().then(function(error){
       if (error) {
-         callback(error);
+         throw error;
+      } else {
+         console.log("user saved:" + user);
+         mongoose.disconnect(function () {
+            console.log("disconnect");
+            callback();
+         });
       }
-      console.log("user saved:" + user);
-      mongoose.disconnect(function () {
-         console.log("disconnect");
-         callback(null);
-      });
+
    });
 }
 
 module.exports.findOneAndUpdate = function (updatingRecord, newValue, callback) {
    User.findOneAndUpdate(updatingRecord, newValue).then(function(error){
       if (error) {
-         callback(error, null);
+         throw error;
       } else {
          User.findOne(updatingRecord).then(function(error, record){
             if (error) {
-               callback(error, null);
+               throw error;
             } else {
                mongoose.disconnect(function () {
                   console.log("disconnected");
-                  callback(null, record);
+                  callback(record);
                });
             }
          });

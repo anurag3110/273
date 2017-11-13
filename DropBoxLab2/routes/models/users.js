@@ -15,6 +15,6 @@ const UserSchema = new Schema({
 	 sports: String,
 });
 
-const User = mongoose.model('user', UserSchema);
+const User = mongoose.model('users', UserSchema);
 
 module.exports = User;
